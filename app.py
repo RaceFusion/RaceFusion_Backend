@@ -15,6 +15,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:hTNVEaQnBBW
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inicializar la base de datos
+# Inicializar la base de datos
+# Inicializar la base de datos
+# Inicializar la base de datos
+# Inicializar la base de datos
+
 db = SQLAlchemy(app)
 
 # Tabla para los datos históricos de los sensores
