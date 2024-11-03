@@ -147,6 +147,7 @@ def analizar_rendimiento_post_carrera():
 
     # Escalar los datos antes de predecir
     X_carrera_scaled = scaler.transform(X_carrera)
+    # Predecir rendimiento
     puntajes = modelo_rendimiento.predict(X_carrera_scaled)
     
     # Calcular el puntaje promedio de rendimiento de la carrera
