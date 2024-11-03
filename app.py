@@ -20,10 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Inicializar la base de datos
 # Inicializar la base de datos
 # Inicializar la base de datos
-# Inicializar la base de datos
-# Inicializar la base de datos
-# Inicializar la base de datos
-# Inicializar la base de datos
+
 
 db = SQLAlchemy(app)
 
@@ -55,7 +52,6 @@ class RendimientoSensores(db.Model):
     def __repr__(self):
         return f"<RendimientoSensores {self.device_id}>"
 
-# Crear las tablas en la base de datos
 with app.app_context():
     db.create_all()
 
@@ -158,19 +154,16 @@ def analizar_rendimiento_post_carrera():
     # Devolver el puntaje de rendimiento global y detallado
     return jsonify({"status": "success", "puntaje_rendimiento": puntaje_total, "puntajes_detallados": puntajes.tolist()}), 200
 
-# Endpoint para obtener datos históricos filtrados por device_id
 @app.route('/api/v1/datos_historicos', methods=['GET'])
 def datos_historicos():
     device_id = request.args.get("device_id")
     if not device_id:
         return jsonify({"status": "error", "message": "Se requiere device_id"}), 400
 
-    # Obtener registros del dispositivo específico de la tabla de datos históricos
     datos_carrera = HistoricoSensores.query.filter_by(device_id=device_id).order_by(HistoricoSensores.timestamp.asc()).all()
     if not datos_carrera:
         return jsonify({"status": "error", "message": "No hay datos para el dispositivo"}), 404
 
-    # Organizar datos en listas para cada sensor
     datos = {
         "timestamps": [dato.timestamp.isoformat() for dato in datos_carrera],
         "velocidad": [dato.velocidad for dato in datos_carrera],
@@ -181,7 +174,6 @@ def datos_historicos():
 
     return jsonify(datos), 200
 
-# Función para eliminar registros antiguos
 def limpiar_datos_antiguos():
     limite = datetime.utcnow() - timedelta(days=1)
     HistoricoSensores.query.filter(HistoricoSensores.timestamp < limite).delete()
@@ -189,7 +181,6 @@ def limpiar_datos_antiguos():
     db.session.commit()
     print("Registros antiguos eliminados")
 
-# Configuración de un trabajo programado para ejecutar cada 24 horas
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=limpiar_datos_antiguos, trigger="interval", hours=24)
 scheduler.start()
