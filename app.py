@@ -111,6 +111,7 @@ def recibir_datos():
 
     # Guardar en la tabla de rendimiento
     rendimiento = RendimientoSensores(
+        
         device_id=device_id,
         velocidad=velocidad,
         temperatura=temperatura,
