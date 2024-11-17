@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,6 +12,7 @@ import joblib
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 # Configuración de la base de datos MySQL
 DATABASE_CONFIG = {
